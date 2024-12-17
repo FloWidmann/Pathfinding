@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Astar.hpp"
 #include <raylib.h>
 
 
@@ -10,13 +11,9 @@ struct Field
 {
 	int iPosx;
 	int iPosy;
-	void draw_field()
-	{
+	Field* parent;
 
-	}
 };
-
-
 
 
 
