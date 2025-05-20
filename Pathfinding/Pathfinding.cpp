@@ -33,6 +33,8 @@ public:
 
     {
             _sliceResistance.at(5) = 1; // Wert nach der Initialisierung setzen
+            _setTarget = false;
+            _setStart = false;
     }
 
 
