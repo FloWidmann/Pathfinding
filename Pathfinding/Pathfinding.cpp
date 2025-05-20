@@ -15,6 +15,8 @@ private:
     int _offSetLeft;
     int _offSetTop;
     int _lineThickness;
+    bool _setTarget;
+    bool _setStart;
     //Vector that contains values which represent the resistance of a slice 
     std::vector<float> _sliceResistance;
 
@@ -80,36 +82,64 @@ public:
         {
             int indexPosX = (mousePos.x - _offSetLeft) / _sliceSize;
             int indexPosY = (mousePos.y - _offSetTop + 22) / _sliceSize;
-            std::cout << "X: " << indexPosX << " Y: " << (mousePos.y - _offSetTop + 22) << std::endl;
 
-            if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) && (mousePos.y > _offSetTop && mousePos.y < _offSetTop + _fieldLength))
+            if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) && (mousePos.y > (_offSetTop - 2*_lineThickness) && mousePos.y < _offSetTop + _fieldLength))
             {
-                
-                _sliceResistance.at( indexPosY * _slices + indexPosX) = 1;
+                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 1) _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
+                else
+                {
+                    _sliceResistance.at(indexPosY * _slices + indexPosX) = 1;
+                }
             }
         }
-
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && IsKeyDown(KEY_S))
+        
+        if (IsKeyReleased(KEY_S))
         {
-            if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) && (mousePos.y > _offSetTop && mousePos.y < _offSetTop + _fieldLength))
+            int indexPosX = (mousePos.x - _offSetLeft) / _sliceSize;
+            int indexPosY = (mousePos.y - _offSetTop + 22) / _sliceSize;
+
+            if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) && (mousePos.y > (_offSetTop - 2 * _lineThickness) && mousePos.y < _offSetTop + _fieldLength))
             {
-                int indexPosX = (mousePos.x - _offSetLeft) / _sliceSize;
-                int indexPosY = (mousePos.y - _offSetTop) / _sliceSize;
-                std::cout << "X: " << indexPosX << " Y: " << indexPosY << std::endl;
-                _sliceResistance.at(indexPosY * _slices + indexPosX) = 2;
+                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 2)
+                {
+                    _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
+                    _setStart = false;
+                }
+                else
+                {
+                    if (_setStart == false)
+                    {
+                        _sliceResistance.at(indexPosY * _slices + indexPosX) = 2;
+                        _setStart = true;
+                    }
+                }
+            }
+        }
+         
+        if (IsKeyReleased(KEY_T))
+        {
+            int indexPosX = (mousePos.x - _offSetLeft) / _sliceSize;
+            int indexPosY = (mousePos.y - _offSetTop + 22) / _sliceSize;
+
+            if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) && (mousePos.y > (_offSetTop - 2 * _lineThickness) && mousePos.y < _offSetTop + _fieldLength))
+            {
+                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 3) 
+                {
+                    _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
+                    _setTarget = false;
+                }
+                else
+                {
+                    if (_setTarget == false)
+                    {
+                        _sliceResistance.at(indexPosY * _slices + indexPosX) = 3;
+                        _setTarget = true;
+
+                    }
+                }
             }
         }
 
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && IsKeyDown(KEY_T))
-        {
-            if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) && (mousePos.y > _offSetTop && mousePos.y < _offSetTop + _fieldLength))
-            {
-                int indexPosX = (mousePos.x - _offSetLeft) / _sliceSize;
-                int indexPosY = (mousePos.y - _offSetTop) / _sliceSize;
-                std::cout << "X: " << indexPosX << " Y: " << indexPosY << std::endl;
-                _sliceResistance.at(indexPosY * _slices + indexPosX) = 3;
-            }
-        }
     }
 
 
