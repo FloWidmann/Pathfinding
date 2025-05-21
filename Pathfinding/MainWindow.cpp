@@ -28,7 +28,7 @@ void MainWindow::run_simulation()
 
         Field::getInstance()->draw_grit();
         Field::getInstance()->draw_blocks();
-        Field::getInstance()->get_mouse_input();
+        Field::getInstance()->check_mouse_input();
         
         
 

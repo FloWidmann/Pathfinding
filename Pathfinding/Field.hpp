@@ -3,6 +3,7 @@
 
 #include <raylib.h>
 #include <vector>
+#include <array>
 
 #define WIDTH 1920
 #define HEIGHT 1080
@@ -21,9 +22,12 @@ private:
     int _offSetLeft;
     int _offSetTop;
     int _lineThickness;
-
+   
     bool _setTarget;
     bool _setStart;
+
+    std::array<int, 2> _startPosXY;
+    std::array<int, 2> _targetPosXY;
 
     std::vector<float> _sliceResistance;
 
@@ -36,9 +40,15 @@ public:
     static Field* getInstance(int pixelsize = 64, int slices = 12);
 
     static void delete_instance();
+
     void draw_grit();
     void draw_blocks();
-    void get_mouse_input();
+    void check_mouse_input();
+    void draw_solution();
+
+    int get_field_size();
+    std::array<int, 2> get_start_pos_XY();
+    std::array<int, 2> get_target_pos_XY();
 
     //Return a vector with obstacles, start and end 
     std::vector<float>& get_sliceResistance();

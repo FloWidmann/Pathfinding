@@ -11,7 +11,10 @@ Field::Field(int pixelsize, int slices)
     _setTarget(false),
     _setStart(false),
     _sliceResistance(_fieldLength, 0) //Initialize vector 
-{}
+{
+    _startPosXY.fill(-1);
+    _targetPosXY.fill(-1);
+}
 
 //single access-method
 Field* Field::getInstance(int pixelsize, int slices)
@@ -85,7 +88,7 @@ void Field::draw_blocks()
     }
 }
 
-void Field::get_mouse_input()
+void Field::check_mouse_input()
 {
     Vector2 mousePos = GetMousePosition();
 
@@ -116,11 +119,13 @@ void Field::get_mouse_input()
             {
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
                 _setStart = false;
+                _startPosXY.fill(-1);
             }
             else if (!_setStart)
             {
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 2;
                 _setStart = true;
+                _startPosXY = { indexPosX, indexPosY };
             }
         }
     }
@@ -137,12 +142,34 @@ void Field::get_mouse_input()
             {
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
                 _setTarget = false;
+                _targetPosXY.fill(-1);
             }
             else if (!_setTarget)
             {
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 3;
                 _setTarget = true;
+                _targetPosXY = { indexPosX, indexPosY };
             }
         }
     }
+}
+
+int Field::get_field_size()
+{
+    return _slices;
+}
+
+std::array<int, 2> Field::get_start_pos_XY()
+{
+    return _startPosXY;
+}
+
+std::array<int, 2> Field::get_target_pos_XY()
+{
+    return _targetPosXY;
+}
+
+void Field::draw_solution()
+{
+    //I want to draw lines connecting together to the path to the goal
 }
