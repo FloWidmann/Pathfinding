@@ -11,9 +11,7 @@ Field::Field(int pixelsize, int slices)
     _setTarget(false),
     _setStart(false),
     _sliceResistance(_fieldLength, 0) //Initialize vector 
-{
-    _sliceResistance.at(5) = 1;
-}
+{}
 
 //single access-method
 Field* Field::getInstance(int pixelsize, int slices)

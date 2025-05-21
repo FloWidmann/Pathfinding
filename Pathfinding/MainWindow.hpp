@@ -1,17 +1,21 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include "Button.hpp"
 #include "Field.hpp"
-#include "raylib.h"
+
+
 
 class MainWindow
 {
+private:
+    Button* _buttonDFS;
+
 public:
     MainWindow();
     ~MainWindow(); // Destruktor für Speicherverwaltung
 
-    void init();
     void run_simulation();
 };
 
-#endif // MAINWINDOW_HPP
+#endif //MAINWINDOW_HPP

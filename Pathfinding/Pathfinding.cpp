@@ -1,7 +1,8 @@
 #include <iostream>
 #include <raylib.h>
 #include <vector>
-#include "Field.hpp"
+#include <string>
+
 #include "MainWindow.hpp" 
 
 #define WIDTH 1920
@@ -19,10 +20,8 @@
 
 
 
-
 int main()
 {
     MainWindow mainWindow;
-    mainWindow.init();
     mainWindow.run_simulation();
 }
