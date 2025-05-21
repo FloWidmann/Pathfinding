@@ -100,10 +100,19 @@ void Field::check_mouse_input()
         if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) &&
             (mousePos.y > (_offSetTop - 2 * _lineThickness) && mousePos.y < _offSetTop + _fieldLength))
         {
-            if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 1)
-                _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
-            else
-                _sliceResistance.at(indexPosY * _slices + indexPosX) = 1;
+            int currentField = _sliceResistance.at(indexPosY * _slices + indexPosX);
+            int newField = 0;
+
+            switch (currentField)
+            {
+                case(0): newField = 1; break;
+                case(1): newField = 0; break;
+                case(2): newField = 1; _setStart = false; break;
+                case(3): newField = 1; _setTarget = false; break;
+                default: newField = 0; break;
+            }
+            _sliceResistance.at(indexPosY * _slices + indexPosX) = newField;
+
         }
     }
 
@@ -123,6 +132,8 @@ void Field::check_mouse_input()
             }
             else if (!_setStart)
             {
+
+                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 3) _setTarget = false;
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 2;
                 _setStart = true;
                 _startPosXY = { indexPosX, indexPosY };
@@ -146,6 +157,7 @@ void Field::check_mouse_input()
             }
             else if (!_setTarget)
             {
+                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 2) _setStart = false;
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 3;
                 _setTarget = true;
                 _targetPosXY = { indexPosX, indexPosY };
