@@ -3,6 +3,8 @@
 
 #include "Button.hpp"
 #include "Field.hpp"
+#include "DephFirstSearch.hpp"
+
 
 
 
@@ -10,7 +12,7 @@ class MainWindow
 {
 private:
     Button* _buttonDFS;
-    bool _solvingAlgorithm;
+    //bool _solvingAlgorithm;
 
 
 public:

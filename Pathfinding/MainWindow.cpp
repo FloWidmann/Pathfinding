@@ -3,13 +3,12 @@
 
 
 
+
 MainWindow::MainWindow()
 {
     InitWindow(WIDTH, HEIGHT, "raylib [shapes] example - basic shapes drawing");
     SetTargetFPS(60);
     Field::get_instance(64, 12);
-
-    _solvingAlgorithm = false;
     _buttonDFS = new Button("DFS-Algorithm", WIDTH / 2 + 400, HEIGHT / 2, 50, 10);
 }
 
@@ -30,21 +29,10 @@ void MainWindow::run_simulation()
         DrawLine(WIDTH / 2 - 300, 40, WIDTH / 2 - 275, 40, WHITE);
         _buttonDFS->display_button();
         
-        if (IsKeyReleased(KEY_C) && _solvingAlgorithm == false)
+        if (IsKeyReleased(KEY_C))// && _solvingAlgorithm == false)
         {
-
-            int i = 0;
-            for (float val : Field::get_instance()->get_sliceResistance())
-            {
-                std::cout << val << " ";
-                if ((i + 1) % Field::get_instance()->get_num_of_slices() == 0 && i != 0)
-                {
-                    std::cout << "\n";
-                }
-                i++;
-            }
-
-            _solvingAlgorithm = true;
+            DepthFirstSearch(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
+                Field::get_instance()->get_start_position(), { 0,0 });
         }
 
         Field::get_instance()->draw_grit();
@@ -58,6 +46,3 @@ void MainWindow::run_simulation()
 
     CloseWindow();
 }
-
-
-

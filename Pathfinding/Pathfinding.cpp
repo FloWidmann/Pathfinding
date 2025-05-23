@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <array>
-
+#include "MainWindow.hpp"2
 
 #define WIDTH 1920
 #define HEIGHT 1080
@@ -23,61 +23,13 @@ void change_float_to_bool(std::vector<float>& vec) {
 
 
 
-void DepthFirstSearch(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, int posStartX, int posStartY, int posTargetX, int posTargetY)
-{
-    //NOTE: this first implementation works only with bool values. So no obstacles that would "slow down" the path
-    //Here comes a very naive approach, let´s see how it goes
-
-    change_float_to_bool(obstacleArray);
-    std::vector <int> vecPossibleFields;
-    int checkFieldX = posStartX;
-    int checkFielY = posStartY;
-    bool finish = false;
-
-    while(!finish)
-    {
-        //Check North
-        if (obstacleArray.at((posStartY - 1) * fieldWidth + posStartX) == 0 && (posStartY - 1) > 0)
-        {
-            vecPossibleFields.push_back((posStartY + 1) * fieldWidth + posStartX);
-        }
-    
-        //Check West
-        if (obstacleArray.at(posStartY * fieldWidth + posStartX - 1) == 0 && (posStartX - 1) > 0)
-        {
-            vecPossibleFields.push_back((posStartY + 1) * fieldWidth + posStartX);
-        }
-    
-        //Check South
-        if (obstacleArray.at((posStartY + 1) * fieldWidth + posStartX) == 0 && (posStartY + 1) > fieldHeight)
-        {
-            vecPossibleFields.push_back((posStartY + 1) * fieldWidth + posStartX);
-        }
-    
-        //Check East
-        if (obstacleArray.at(posStartY * fieldWidth + posStartX + 1) == 0 && (posStartX + 1) < fieldWidth)
-        {
-            vecPossibleFields.push_back((posStartY + 1) * fieldWidth + posStartX);
-        }
-    }   
-
-    for (int positions : vecPossibleFields)
-    {
-        std::cout << positions << " ";
-    }
-    
-}
-
-
-#include "MainWindow.hpp" 
-
-
 
 int main()
 {
 
     MainWindow mainWindow;
     mainWindow.run_simulation();
+ 
     for (float position : Field::get_instance()->get_sliceResistance())
     {
         std::cout << position << " ";

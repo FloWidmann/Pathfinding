@@ -83,6 +83,13 @@ void Field::draw_blocks()
                     _sliceSize - _lineThickness, _sliceSize - _lineThickness, YELLOW);
                 break;
             }
+            case 4:
+            {
+                DrawRectangle(_offSetLeft + x * _sliceSize + _lineThickness / 2,
+                    _offSetTop + y * _sliceSize + _lineThickness / 2,
+                    _sliceSize - _lineThickness, _sliceSize - _lineThickness, ORANGE);
+                break;
+            }
             }
         }
     }
@@ -164,6 +171,11 @@ void Field::check_mouse_input()
             }
         }
     }
+}
+
+std::array<int, 2> Field::get_start_position()
+{
+    return _startPosXY;
 }
 
 int Field::get_num_of_slices()

@@ -48,6 +48,8 @@ public:
 
     int get_num_of_slices();
 
+    std::array<int, 2> get_start_position();
+
     //Return a vector with obstacles, start and end 
     std::vector<float>& get_sliceResistance();
 };
