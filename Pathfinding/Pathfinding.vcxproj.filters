@@ -21,18 +21,12 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Field.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="DephFirstSearch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Field.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Button.hpp">

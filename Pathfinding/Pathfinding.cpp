@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "MainWindow.hpp"2
+#include "MainWindow.hpp"
 
 #define WIDTH 1920
 #define HEIGHT 1080

@@ -44,6 +44,14 @@ void DepthFirstSearch(std::vector<float>& obstacleArray, int fieldWidth, int fie
                 obstacleArray.at(checkFieldY * fieldWidth + checkFieldX + 1) = 4;
             }
             finish = true;
+            
+            if (!vecPossibleFields.empty())
+            {
+                checkFieldX = vecPossibleFields.back() - (checkFieldY * fieldWidth);
+                checkFieldY = (vecPossibleFields.back() - checkFieldX) / fieldWidth;
+                std::cout << "Naechstes Feld: X- " << checkFieldX << " Y-" << checkFieldY << std::endl;
+            }
+        
         }
     }
 
