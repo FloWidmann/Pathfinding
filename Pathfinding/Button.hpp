@@ -28,6 +28,11 @@ public:
         _wasClicked = false;
     }
 
+    ~Button()
+    {
+
+    }
+
     void display_button()
     {
         DrawRectangleRoundedLines(_buttonFrame, 0.5, 0, 3, WHITE);
