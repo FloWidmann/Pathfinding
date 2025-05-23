@@ -10,14 +10,14 @@ Field::Field(int pixelsize, int slices)
     _lineThickness(10),
     _setTarget(false),
     _setStart(false),
-    _sliceResistance(_fieldLength, 0) //Initialize vector 
+    _sliceResistance(_slices * _slices, 0) //Initialize vector 
 {
     _startPosXY.fill(-1);
     _targetPosXY.fill(-1);
 }
 
 //single access-method
-Field* Field::getInstance(int pixelsize, int slices)
+Field* Field::get_instance(int pixelsize, int slices)
 {
     if (_instance == nullptr)
     {
@@ -166,19 +166,9 @@ void Field::check_mouse_input()
     }
 }
 
-int Field::get_field_size()
+int Field::get_num_of_slices()
 {
     return _slices;
-}
-
-std::array<int, 2> Field::get_start_pos_XY()
-{
-    return _startPosXY;
-}
-
-std::array<int, 2> Field::get_target_pos_XY()
-{
-    return _targetPosXY;
 }
 
 void Field::draw_solution()

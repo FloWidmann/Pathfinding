@@ -10,6 +10,8 @@ class MainWindow
 {
 private:
     Button* _buttonDFS;
+    bool _solvingAlgorithm;
+
 
 public:
     MainWindow();

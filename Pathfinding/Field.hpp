@@ -31,13 +31,13 @@ private:
 
     std::vector<float> _sliceResistance;
 
-    //private constructor so the class can be only instanciated through getInstance()-method
+    //private constructor so the class can be only instanciated through get_instance()-method
     Field(int pixelsize, int slices);
 
 public:
 
     //Returns the only instance of this class or creates one, put standard-values
-    static Field* getInstance(int pixelsize = 64, int slices = 12);
+    static Field* get_instance(int pixelsize = 64, int slices = 12);
 
     static void delete_instance();
 
@@ -46,9 +46,7 @@ public:
     void check_mouse_input();
     void draw_solution();
 
-    int get_field_size();
-    std::array<int, 2> get_start_pos_XY();
-    std::array<int, 2> get_target_pos_XY();
+    int get_num_of_slices();
 
     //Return a vector with obstacles, start and end 
     std::vector<float>& get_sliceResistance();

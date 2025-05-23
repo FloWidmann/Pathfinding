@@ -1,12 +1,15 @@
 #include "MainWindow.hpp"
 
+
+
+
 MainWindow::MainWindow()
 {
     InitWindow(WIDTH, HEIGHT, "raylib [shapes] example - basic shapes drawing");
     SetTargetFPS(60);
-    Field::getInstance(64, 12);
+    Field::get_instance(64, 12);
 
-
+    _solvingAlgorithm = false;
     _buttonDFS = new Button("DFS-Algorithm", WIDTH / 2 + 400, HEIGHT / 2, 50, 10);
 }
 
@@ -14,6 +17,7 @@ MainWindow::~MainWindow()
 {
     Field::delete_instance();
 }
+
 
 void MainWindow::run_simulation()
 {
@@ -25,10 +29,27 @@ void MainWindow::run_simulation()
         DrawText("Pathfinding-Algorithms Demonstration", WIDTH / 2 - 300, 40, 40, RED);
         DrawLine(WIDTH / 2 - 300, 40, WIDTH / 2 - 275, 40, WHITE);
         _buttonDFS->display_button();
+        
+        if (IsKeyReleased(KEY_C) && _solvingAlgorithm == false)
+        {
 
-        Field::getInstance()->draw_grit();
-        Field::getInstance()->draw_blocks();
-        Field::getInstance()->check_mouse_input();
+            int i = 0;
+            for (float val : Field::get_instance()->get_sliceResistance())
+            {
+                std::cout << val << " ";
+                if ((i + 1) % Field::get_instance()->get_num_of_slices() == 0 && i != 0)
+                {
+                    std::cout << "\n";
+                }
+                i++;
+            }
+
+            _solvingAlgorithm = true;
+        }
+
+        Field::get_instance()->draw_grit();
+        Field::get_instance()->draw_blocks();
+        Field::get_instance()->check_mouse_input();
         
         
 
