@@ -66,7 +66,7 @@ void Field::draw_blocks()
             {
                 DrawRectangle(_offSetLeft + x * _sliceSize + _lineThickness / 2,
                     _offSetTop + y * _sliceSize + _lineThickness / 2,
-                    _sliceSize - _lineThickness, _sliceSize - _lineThickness, RED);
+                    _sliceSize - _lineThickness, _sliceSize - _lineThickness, YELLOW);
                 break;
             }
             case 2:
@@ -80,7 +80,7 @@ void Field::draw_blocks()
             {
                 DrawRectangle(_offSetLeft + x * _sliceSize + _lineThickness / 2,
                     _offSetTop + y * _sliceSize + _lineThickness / 2,
-                    _sliceSize - _lineThickness, _sliceSize - _lineThickness, YELLOW);
+                    _sliceSize - _lineThickness, _sliceSize - _lineThickness, RED);
                 break;
             }
             case 4:
@@ -112,10 +112,10 @@ void Field::check_mouse_input()
 
             switch (currentField)
             {
-            case(0): newField = 1; break;
-            case(1): newField = 0; break;
-            case(2): newField = 1; _setStart = false; break;
-            case(3): newField = 1; _setTarget = false; break;
+            case(0): newField = 3; break;
+            case(1): newField = 3; _setTarget = false; break;
+            case(2): newField = 3; _setStart = false; break;
+            case(3): newField = 0; break;
             default: newField = 0; break;
             }
             _sliceResistance.at(indexPosY * _slices + indexPosX) = newField;
@@ -131,7 +131,7 @@ void Field::check_mouse_input()
         if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) &&
             (mousePos.y > (_offSetTop - 2 * _lineThickness) && mousePos.y < _offSetTop + _fieldLength))
         {
-            if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 2)
+            if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 1)
             {
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
                 _setStart = false;
@@ -140,7 +140,7 @@ void Field::check_mouse_input()
             else if (!_setStart)
             {
 
-                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 3) _setTarget = false;
+                if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 1) _setTarget = false;
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 2;
                 _setStart = true;
                 _startPosXY = { indexPosX, indexPosY };
@@ -156,7 +156,7 @@ void Field::check_mouse_input()
         if ((mousePos.x > _offSetLeft && mousePos.x < _offSetLeft + _fieldLength) &&
             (mousePos.y > (_offSetTop - 2 * _lineThickness) && mousePos.y < _offSetTop + _fieldLength))
         {
-            if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 3)
+            if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 1)
             {
                 _sliceResistance.at(indexPosY * _slices + indexPosX) = 0;
                 _setTarget = false;
@@ -165,7 +165,7 @@ void Field::check_mouse_input()
             else if (!_setTarget)
             {
                 if (_sliceResistance.at(indexPosY * _slices + indexPosX) == 2) _setStart = false;
-                _sliceResistance.at(indexPosY * _slices + indexPosX) = 3;
+                _sliceResistance.at(indexPosY * _slices + indexPosX) = 1;
                 _setTarget = true;
                 _targetPosXY = { indexPosX, indexPosY };
             }
