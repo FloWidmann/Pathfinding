@@ -21,15 +21,8 @@ void DepthFirstSearch(std::vector<float>& obstacleArray, int fieldWidth, int fie
         //out_of_range probably because somehow checkFieldX is -1
         while (!finish)
         {
-            //Check North
             //NOTE: painful discovery - logic conditions are from left to right, so this code is save because it checks checkFieldY first
-            if ((checkFieldY - 1) >= 0 && obstacleArray.at((checkFieldY - 1) * fieldWidth + checkFieldX) == 0 )
-            {
-                vecPossibleFields.push_back((checkFieldY - 1) * fieldWidth + checkFieldX);
-                setPossibleFields.insert((checkFieldY - 1) * fieldWidth + checkFieldX);
-                obstacleArray.at(((checkFieldY - 1) * fieldWidth + checkFieldX)) = 4;
-
-            }
+            
 
             //Check West
             if ((checkFieldX - 1) >= 0 && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX - 1) == 0 )
@@ -54,14 +47,36 @@ void DepthFirstSearch(std::vector<float>& obstacleArray, int fieldWidth, int fie
                 setPossibleFields.insert(checkFieldY * fieldWidth + checkFieldX + 1);
                 obstacleArray.at(checkFieldY * fieldWidth + checkFieldX + 1) = 4;
             }
+
+            //Check North
+            if ((checkFieldY - 1) >= 0 && obstacleArray.at((checkFieldY - 1) * fieldWidth + checkFieldX) == 0)
+            {
+                vecPossibleFields.push_back((checkFieldY - 1) * fieldWidth + checkFieldX);
+                setPossibleFields.insert((checkFieldY - 1) * fieldWidth + checkFieldX);
+                obstacleArray.at(((checkFieldY - 1) * fieldWidth + checkFieldX)) = 4;
+            }
             
             if (!vecPossibleFields.empty())
             {
-
-                checkFieldX = vecPossibleFields.back() - (checkFieldY * fieldWidth);
-                checkFieldY = (vecPossibleFields.back() - checkFieldX) / fieldWidth;
+                int nextField = vecPossibleFields.back();
                 vecPossibleFields.pop_back();
+
+                int nextFieldX = nextField % fieldWidth;
+                int nextFieldY = nextField / fieldWidth;
+
+                if (nextFieldX >= 0 && nextFieldX < fieldWidth && nextFieldY >= 0 && nextFieldY < fieldHeight)
+                {
+                    checkFieldX = nextFieldX;
+                    checkFieldY = nextFieldY;
+                }
+                else
+                {
+                    std::cout << "Fehlerhafte Berechnung von checkFieldX/checkFieldY!" << std::endl;
+                }
+
+                std::cout << checkFieldX << " " << checkFieldY << std::endl;
             }
+
             else
             {
                 finish = true;
