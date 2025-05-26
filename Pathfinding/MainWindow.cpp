@@ -218,7 +218,7 @@ void MainWindow::run_simulation()
         if (IsKeyReleased(KEY_C))// && _solvingAlgorithm == false)
         {
             ClearCheckedFields(Field::get_instance()->get_sliceResistance());
-            DepthFirstSearch(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
+            CheckPossibleFields(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
                 Field::get_instance()->get_start_position(), { 0,0 });
         }
 
