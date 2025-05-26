@@ -95,6 +95,8 @@ void Field::draw_blocks()
     }
 }
 
+
+//Need to change the numbering of the fields so I can check if the target is in the fields 
 void Field::check_mouse_input()
 {
     Vector2 mousePos = GetMousePosition();

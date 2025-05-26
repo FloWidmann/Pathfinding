@@ -1,6 +1,6 @@
 #include "DephFirstSearch.hpp"
 
-void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> tartgetPosition)
+void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> targetPosition)
 {
     //NOTE: this first implementation works only with bool values. So no obstacles that would "slow down" the path
     //Here comes a very naive approach, let´s see how it goes
@@ -9,12 +9,14 @@ void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int 
     std::unordered_set<int> setPossibleFields;
     std::vector <int> vecPossibleFields;
     bool finish = false;
+    bool solvable = false;
     int i = 0;
 
-    if (startPosition[0] >= 0 && startPosition[1] >= 0)
+    if (startPosition[0] >= 0 && startPosition[1] >= 0 && targetPosition[0] >= 0 && targetPosition[1] >= 0)
     {
         int checkFieldX = startPosition[0];
         int checkFieldY = startPosition[1];
+       
 
 
         //WARNING BUGS: When open to to edge a out_of_range Exception occurs and when making a T-shape with the obstacles the east direction doesn´t work 
