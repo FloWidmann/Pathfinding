@@ -3,7 +3,7 @@
 
 
 
-void DephFirstAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> tartgetPosition)
+void DephFirstAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> targetPosition)
 {
     
     Node* startNode = new Node(startPosition[0] + startPosition[1] * fieldWidth);
@@ -14,47 +14,63 @@ void DephFirstAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int f
     
     bool finish = false;
 
-    while (!finish)
+    if (startPosition[0] >= 0 && startPosition[1] >= 0)
     {
-        //Check North 
-        if (startPosition[0] >= 0 && startPosition[1] >= 0)
+        int checkFieldX = startPosition[0];
+        int checkFieldY = startPosition[1];
+
+        while (!nodeStack.empty())
         {
-            int checkFieldX = startPosition[0];
-            int checkFieldY = startPosition[1];
+            Node* currentNode = nodeStack.top();
+            nodeStack.pop();
 
-            while (!finish)
-            {
-                //NOTE: painful discovery - logic conditions are from left to right, so this code is save because it checks checkFieldY first
-                //Check West
-                if ((checkFieldX - 1) >= 0 && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX - 1) <= 2)
-                {
-                    currentNode->add_neighbour(new Node(checkFieldY * fieldWidth + checkFieldX - 1));
-                }
-
-                //Check South - have to subtract 1 because it´s 0 based
-                if ((checkFieldY + 1) <= (fieldHeight - 1) && obstacleArray.at((checkFieldY + 1) * fieldWidth + checkFieldX) <= 2)
-                {
-                    currentNode->add_neighbour(new Node((checkFieldY + 1) * fieldWidth + checkFieldX));
-                }
-
-                //Check East
-                if ((checkFieldX + 1) <= (fieldWidth - 1) && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX + 1) <= 2)
-                {
-                    currentNode->add_neighbour(new Node(checkFieldY * fieldWidth + checkFieldX + 1));
-                }
-
-                //Check North
-                if ((checkFieldY - 1) >= 0 && obstacleArray.at((checkFieldY - 1) * fieldWidth + checkFieldX) <= 2)
-                {
-                    currentNode->add_neighbour(new Node((checkFieldY - 1) * fieldWidth + checkFieldX));
-                }
-                currentNode = currentNode->vecNeighbours.back();
-
-                finish = true;
+            if (currentNode->absolutePosition == targetPosition[0] + targetPosition[1] * fieldWidth) {
+                std::cout << "Ziel erreicht bei: " << currentNode->absolutePosition << std::endl;
+                break;
             }
+
+
+            //Check West
+            if ((checkFieldX - 1) >= 0 && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX - 1) <= 2 && !vecVisited[checkFieldY * fieldWidth + checkFieldX - 1])
+            {
+                Node* newNode = new Node(checkFieldY * fieldWidth + checkFieldX - 1);
+                currentNode->add_neighbour(newNode);
+                nodeStack.push(newNode);
+                vecVisited[newNode->absolutePosition] = true;
+            }
+
+            //Check South - have to subtract 1 because it´s 0 based
+            if ((checkFieldY + 1) <= (fieldHeight - 1) && obstacleArray.at((checkFieldY + 1) * fieldWidth + checkFieldX) <= 2 && !vecVisited[(checkFieldY + 1) * fieldWidth + checkFieldX])
+            {
+                Node* newNode = new Node((checkFieldY + 1) * fieldWidth + checkFieldX);
+                currentNode->add_neighbour(new Node((checkFieldY + 1) * fieldWidth + checkFieldX));
+                nodeStack.push(newNode);
+                vecVisited[newNode->absolutePosition];
+            }
+
+            //Check East
+            if ((checkFieldX + 1) <= (fieldWidth - 1) && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX + 1) <= 2 && !vecVisited[checkFieldY * fieldWidth + checkFieldX + 1])
+            {
+                Node* newNode = new Node(checkFieldY * fieldWidth + checkFieldX + 1);
+                currentNode->add_neighbour(new Node(checkFieldY * fieldWidth + checkFieldX + 1));
+                nodeStack.push(newNode);
+                vecVisited[newNode->absolutePosition];
+            }
+
+            //Check North
+            if ((checkFieldY - 1) >= 0 && obstacleArray.at((checkFieldY - 1) * fieldWidth + checkFieldX) <= 2 && !vecVisited[(checkFieldY - 1) * fieldWidth + checkFieldX])
+            {
+                Node* newNode = new Node((checkFieldY - 1) * fieldWidth + checkFieldX);
+                currentNode->add_neighbour(new Node((checkFieldY - 1) * fieldWidth + checkFieldX));
+                nodeStack.push(newNode);
+                vecVisited[newNode->absolutePosition];
+            }
+
+            delete currentNode;
         }
+
+        delete startNode;
     }
-    currentNode->print_neighbour();
 }
 
 
