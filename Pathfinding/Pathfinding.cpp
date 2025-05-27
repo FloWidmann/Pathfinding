@@ -29,10 +29,5 @@ int main()
 
     MainWindow mainWindow;
     mainWindow.run_simulation();
- 
-    for (float position : Field::get_instance()->get_sliceResistance())
-    {
-        std::cout << position << " ";
-    }
 
 }

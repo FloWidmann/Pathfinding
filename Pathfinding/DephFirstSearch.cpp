@@ -1,19 +1,17 @@
 #include "DephFirstSearch.hpp"
 
 
-struct Node
-{
-    int PosX;
-    int PosY;
-    std::vector<Node*> vecNeightbours;
-    Node(int posX, int posY) : PosX(posX), PosY(posY)
-    {}
-};
+
 
 void DephFirstAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> tartgetPosition)
 {
-    Node* startNode = new Node(startPosition[0], startPosition[1]);
-    std::vector<bool> vecVisited;
+    
+    Node* startNode = new Node(startPosition[0] + startPosition[1] * fieldWidth);
+    std::stack<Node*> nodeStack;
+    std::vector<bool> vecVisited(fieldWidth * fieldHeight, false);
+    nodeStack.push(startNode);
+    vecVisited[startNode->absolutePosition] = true;
+    
     bool finish = false;
 
     while (!finish)
@@ -28,52 +26,35 @@ void DephFirstAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int f
             {
                 //NOTE: painful discovery - logic conditions are from left to right, so this code is save because it checks checkFieldY first
                 //Check West
-                if ((checkFieldX - 1) >= 0 && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX - 1) <= 2 )
+                if ((checkFieldX - 1) >= 0 && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX - 1) <= 2)
                 {
-                    vecVisited.push_back(checkFieldY * fieldWidth + checkFieldX - 1);
-                    startNode->vecNeightbours.push_back(new Node(checkFieldX, checkFieldY - 1));
-                    obstacleArray.at(checkFieldY * fieldWidth + checkFieldX - 1) = 4;
+                    currentNode->add_neighbour(new Node(checkFieldY * fieldWidth + checkFieldX - 1));
                 }
 
                 //Check South - have to subtract 1 because it´s 0 based
                 if ((checkFieldY + 1) <= (fieldHeight - 1) && obstacleArray.at((checkFieldY + 1) * fieldWidth + checkFieldX) <= 2)
                 {
-                    startNode->vecNeightbours.push_back(new Node(checkFieldX, checkFieldY + 1));
-                    obstacleArray.at((checkFieldY + 1) * fieldWidth + checkFieldX) = 4;
+                    currentNode->add_neighbour(new Node((checkFieldY + 1) * fieldWidth + checkFieldX));
                 }
 
                 //Check East
                 if ((checkFieldX + 1) <= (fieldWidth - 1) && obstacleArray.at(checkFieldY * fieldWidth + checkFieldX + 1) <= 2)
                 {
-                    startNode->vecNeightbours.push_back(new Node(checkFieldX + 1, checkFieldY));
-                    obstacleArray.at(checkFieldY * fieldWidth + checkFieldX + 1) = 4;
+                    currentNode->add_neighbour(new Node(checkFieldY * fieldWidth + checkFieldX + 1));
                 }
 
                 //Check North
                 if ((checkFieldY - 1) >= 0 && obstacleArray.at((checkFieldY - 1) * fieldWidth + checkFieldX) <= 2)
                 {
-                    startNode->vecNeightbours.push_back(new Node(checkFieldX, checkFieldY - 1));
-                    obstacleArray.at(((checkFieldY - 1) * fieldWidth + checkFieldX)) = 4;
+                    currentNode->add_neighbour(new Node((checkFieldY - 1) * fieldWidth + checkFieldX));
                 }
-                else
-                {
-                    startNode->vecNeightbours.pop_back();
-                }
+                currentNode = currentNode->vecNeighbours.back();
 
-                if (!vecVisited.empty())
-                {
-                 
-                }
-
-                else
-                {
-                    finish = true;
-                }
+                finish = true;
             }
         }
-
     }
-
+    currentNode->print_neighbour();
 }
 
 
@@ -142,10 +123,8 @@ void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int 
                 {
                     std::cout << "Fehlerhafte Berechnung von checkFieldX/checkFieldY!" << std::endl;
                 }
-
-                std::cout << checkFieldX << " " << checkFieldY << std::endl;
             }
-
+            
             else
             {
                 finish = true;
