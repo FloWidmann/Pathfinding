@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DephFirstSearch.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="DephFirstSearch.hpp" />
+    <ClInclude Include="Field.hpp" />
     <ClInclude Include="MainWindow.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
