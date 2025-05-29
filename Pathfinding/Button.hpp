@@ -36,9 +36,37 @@ public:
     void display_button()
     {
         DrawRectangleRoundedLines(_buttonFrame, 0.5, 0, 3, WHITE);
-        DrawText(_title, _posX + _fontOffSet, _posY + _fontOffSet, _fontSize, RED);
+        if(check_mouse_position())  DrawText(_title, _posX + _fontOffSet, _posY + _fontOffSet, _fontSize, GREEN);
+        else
+        {
+            DrawText(_title, _posX + _fontOffSet, _posY + _fontOffSet, _fontSize, RED);
+        }
     }
 
+    bool was_pressed()
+    {
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && check_mouse_position())
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+private:
+    bool check_mouse_position()
+    {
+
+        Vector2 mousePosition = GetMousePosition();
+        if (mousePosition.x > _posX && mousePosition.x < _posX + _width && mousePosition.y > _posY && mousePosition.y < _posY + _height) return true;
+        else
+        {
+            return false;
+        }
+    }
 };
 
 

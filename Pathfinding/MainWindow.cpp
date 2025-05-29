@@ -28,7 +28,7 @@ void MainWindow::run_simulation()
         DrawText("Pathfinding-Algorithms Demonstration", WIDTH / 2 - 300, 40, 40, RED);
         _buttonDFS->display_button();
         
-        if (IsKeyReleased(KEY_C))// && _solvingAlgorithm == false)
+        if (_buttonDFS->was_pressed())// && _solvingAlgorithm == false)
         {
             ClearCheckedFields(Field::get_instance()->get_sliceResistance());
             DephFirstAlgorithm(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
