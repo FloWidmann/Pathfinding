@@ -6,6 +6,8 @@
 #include <stack>
 #include <limits>
 #include <queue>
+#include <algorithm>
+#include <iomanip>
 #include "Node.hpp"
 
 void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> targetPosition);

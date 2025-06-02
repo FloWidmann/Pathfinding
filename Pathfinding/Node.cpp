@@ -6,6 +6,11 @@ void Node::add_neighbour(Node* neighbour)
     neighbour->parentNode = this;
 }
 
+void Node::change_value(float newValue)
+{
+    value = newValue;
+}
+
 
 void Node::print_neighbour()
 {

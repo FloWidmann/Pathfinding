@@ -1,5 +1,4 @@
 #include "DjikstraAlgorithm.hpp"
-#define INFINTE std::numeric_limits<float>::max()
 
 
 void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> targetPosition)
@@ -83,7 +82,7 @@ void CheckPossibleFields(std::vector<float>& obstacleArray, int fieldWidth, int 
 }
 
 //Because only data to read is requiered not to write, obstacleArray is set const
-void CalculateDistanceNodes(const std::vector<float>& obstacleArray, std::vector<float>& vecDistances, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition) {
+void CalculateDistanceToStart(const std::vector<float>& obstacleArray, std::vector<float>& vecDistances, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition) {
     
     //if vectors aren´t equal size, abort 
     if (obstacleArray.size() != vecDistances.size()) return;
@@ -92,7 +91,7 @@ void CalculateDistanceNodes(const std::vector<float>& obstacleArray, std::vector
 
     for (int i = 0; i < vecDistances.size(); i++) {
         if (obstacleArray[i] == 3) {
-            vecDistances[i] = INFINTE;
+            vecDistances[i] = FLT_MAX;
         }
         else if (i == startPos) {
             vecDistances[i] = 0.0f;
@@ -108,16 +107,69 @@ void CalculateDistanceNodes(const std::vector<float>& obstacleArray, std::vector
 }
 
 
-
+//I know this isn´t the best way to do it, although I don´t know a better way yet
+//It´s for educational purpose only
 void DjikstraAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> targetPosition)
 {
 
     std::vector<bool> vecVisited(fieldHeight * fieldWidth, false);
     std::vector<float> vecDistances(fieldHeight * fieldWidth);
-    CalculateDistanceNodes(obstacleArray, vecDistances, fieldWidth, fieldHeight, startPosition);
+    CalculateDistanceToStart(obstacleArray, vecDistances, fieldWidth, fieldHeight, startPosition);
+    int startIndex = startPosition[0] + startPosition[1] * fieldWidth;
+    Node* startNode = new Node(startPosition[0] + startPosition[1] * fieldWidth, nullptr, 0.0);
+    std::array<int, 4> neighborOffsets = { -fieldWidth, fieldWidth, -1, 1 };
+
+    std::cout << "Bevor calculation: \n";
     for (int i = 0; i < vecDistances.size(); i++)
     {
-        std::cout << vecDistances.at(i) << " ";
-        if (i != 0 && i % fieldWidth == 0) std::cout << "\n";
+        if (vecDistances.at(i) <= fieldHeight * fieldWidth) std::cout << std::fixed << std::setprecision(2) << vecDistances.at(i) << " ";
+        else
+        {
+            std::cout << "INF ";
+        }
+        if ((i + 1) % fieldWidth == 0) std::cout << "\n";
+
+    }
+
+
+    while (true) {
+        int currentIndex = -1;
+        float smallestDist = FLT_MAX;
+
+        //Finds node with smallest distance
+        for (int i = 0; i < vecDistances.size(); i++) {
+            if (!vecVisited[i] && vecDistances[i] < smallestDist) {
+                smallestDist = vecDistances[i];
+                currentIndex = i;
+            }
+        }
+
+        //No more nodes available or target found
+        if (currentIndex == -1 || currentIndex == targetPosition[0] + targetPosition[1] * fieldWidth) break;
+        vecVisited[currentIndex] = true;
+
+        //4 possible ways to go, North, South, West, East
+        
+        for (int offset : neighborOffsets) {
+            int neighborIdx = currentIndex + offset;
+            if (neighborIdx >= 0 && neighborIdx < fieldWidth * fieldHeight && !vecVisited[neighborIdx]) {
+                float newDist = vecDistances[currentIndex] + 1;
+                if (newDist < vecDistances[neighborIdx]) {
+                    vecDistances[neighborIdx] = newDist;
+                }
+            }
+        }
+    }
+    std::cout << "after calculation \n \n";
+
+    for (int i = 0; i < vecDistances.size(); i++)
+    {
+        if (vecDistances.at(i) <= 100) std::cout << std::fixed << std::setprecision(2) << vecDistances.at(i) << " ";
+        else
+        {
+            std::cout << "INF ";
+        }
+        if ((i + 1) % fieldWidth == 0) std::cout << "\n";
+
     }
 }
