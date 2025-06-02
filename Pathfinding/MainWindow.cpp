@@ -9,11 +9,13 @@ MainWindow::MainWindow()
     SetTargetFPS(60);
     Field::get_instance(64, 12);
     _buttonDFS = new Button("DFS-Algorithm", WIDTH / 2 + 400, HEIGHT / 2, 50, 10);
+    _buttonDjikstra = new Button("Djikstra Algorithm", WIDTH / 2 + 400, HEIGHT / 2 + 100, 50, 10);
 }
 
 MainWindow::~MainWindow()
 {
     Field::delete_instance();
+    delete(_buttonDjikstra);
     delete(_buttonDFS);
 }
 
@@ -27,16 +29,21 @@ void MainWindow::run_simulation()
         ClearBackground(BLACK);
         DrawText("Pathfinding-Algorithms Demonstration", WIDTH / 2 - 300, 40, 40, RED);
         _buttonDFS->display_button();
-        
-        if (_buttonDFS->was_pressed())// && _solvingAlgorithm == false)
+        _buttonDjikstra->display_button();
+
+        if (_buttonDFS->was_pressed())
         {
             ClearCheckedFields(Field::get_instance()->get_sliceResistance());
             DephFirstAlgorithm(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
                Field::get_instance()->get_start_position(), Field::get_instance()->get_target_position());            
-           // CheckPossibleFields(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
-                //Field::get_instance()->get_start_position(), Field::get_instance()->get_target_position());
-            
         }
+
+        if (_buttonDjikstra->was_pressed())
+        {
+            DjikstraAlgorithm(Field::get_instance()->get_sliceResistance(), Field::get_instance()->get_num_of_slices(), Field::get_instance()->get_num_of_slices(),
+                Field::get_instance()->get_start_position(), Field::get_instance()->get_target_position());
+        }
+
 
         if (IsKeyReleased(KEY_V)) Field::get_instance()->clear_all_field();
 

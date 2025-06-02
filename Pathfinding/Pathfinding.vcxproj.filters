@@ -27,6 +27,12 @@
     <ClCompile Include="Field.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="DjikstraAlgorithm.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.hpp">
@@ -39,6 +45,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Field.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DjikstraAlgorithm.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -127,16 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DjikstraAlgorithm.cpp" />
     <ClCompile Include="DephFirstSearch.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DjikstraAlgorithm.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="DephFirstSearch.hpp" />
     <ClInclude Include="Field.hpp" />
     <ClInclude Include="MainWindow.hpp" />
+    <ClInclude Include="Node.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

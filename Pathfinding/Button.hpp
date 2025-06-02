@@ -61,7 +61,7 @@ private:
     {
 
         Vector2 mousePosition = GetMousePosition();
-        if (mousePosition.x > _posX && mousePosition.x < _posX + _width && mousePosition.y > _posY && mousePosition.y < _posY + _height) return true;
+        if (mousePosition.x > _posX && mousePosition.x < _posX + _width && mousePosition.y > _posY - _height / 2 && mousePosition.y < _posY + _height / 2) return true;
         else
         {
             return false;
