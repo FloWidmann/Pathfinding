@@ -107,69 +107,77 @@ void CalculateDistanceToStart(const std::vector<float>& obstacleArray, std::vect
 }
 
 
-//I know this isn´t the best way to do it, although I don´t know a better way yet
-//It´s for educational purpose only
+//For next iteration I want to use the class nodes
 void DjikstraAlgorithm(std::vector<float>& obstacleArray, int fieldWidth, int fieldHeight, std::array<int, 2> startPosition, std::array<int, 2> targetPosition)
 {
-
-    std::vector<bool> vecVisited(fieldHeight * fieldWidth, false);
-    std::vector<float> vecDistances(fieldHeight * fieldWidth);
-    CalculateDistanceToStart(obstacleArray, vecDistances, fieldWidth, fieldHeight, startPosition);
-    int startIndex = startPosition[0] + startPosition[1] * fieldWidth;
-    Node* startNode = new Node(startPosition[0] + startPosition[1] * fieldWidth, nullptr, 0.0);
-    std::array<int, 4> neighborOffsets = { -fieldWidth, fieldWidth, -1, 1 };
-
-    std::cout << "Bevor calculation: \n";
-    for (int i = 0; i < vecDistances.size(); i++)
-    {
-        if (vecDistances.at(i) <= fieldHeight * fieldWidth) std::cout << std::fixed << std::setprecision(2) << vecDistances.at(i) << " ";
-        else
-        {
-            std::cout << "INF ";
-        }
-        if ((i + 1) % fieldWidth == 0) std::cout << "\n";
-
-    }
+    int totalNodes = fieldWidth * fieldHeight;
+    std::vector<bool> vecVisited(totalNodes, false);
+    std::vector<float> vecDistances(totalNodes, std::numeric_limits<float>::infinity());
+    std::vector<int> previous(totalNodes, -1); // -1 is no predecessor
 
 
-    while (true) {
-        int currentIndex = -1;
-        float smallestDist = FLT_MAX;
+    int startPos = startPosition[0] + startPosition[1] * fieldWidth;
+    int targetPos = targetPosition[0] + targetPosition[1] * fieldWidth;
 
-        //Finds node with smallest distance
-        for (int i = 0; i < vecDistances.size(); i++) {
-            if (!vecVisited[i] && vecDistances[i] < smallestDist) {
-                smallestDist = vecDistances[i];
-                currentIndex = i;
+    vecDistances[startPos] = 0.0f;
+
+    // Min-Heap (Priority Queue)
+    //contains a pair with distance, position - saves the input in a vector - sorts the values -> lowest is first
+    //a Min-Heap is much faster than iterating through a vector. Min-Heap saves smallest value automatically first
+    std::priority_queue<std::pair<float, int>, std::vector<std::pair<float, int>>, std::greater<std::pair<float, int>>> priorityQueue;
+    priorityQueue.push({ 0.0f, startPos });
+
+    // Different directions
+    std::array<std::array<int, 2>, 4> directions = { {{1, 0}, {-1, 0}, {0, 1}, {0, -1}} };
+
+    while (!priorityQueue.empty()) {
+
+        //Smallest distance is set
+        std::pair<float, int> current = priorityQueue.top();
+        float currentDist = current.first;
+        int currentNode = current.second;
+
+        priorityQueue.pop(); //remove first item
+
+
+        if (vecVisited[currentNode]) continue; //if vec is already visited - skip rest of the while iteration
+        vecVisited[currentNode] = true; //set currentNode to visited, because every node should only be visited once
+
+        int x = currentNode % fieldWidth;
+        int y = currentNode / fieldWidth;
+
+        for (auto& dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+            int neighborIndex = newX + newY * fieldWidth;
+
+            // Prüfen, ob der Nachbar gültig ist
+            if (newX < 0 || newX >= fieldWidth || newY < 0 || newY >= fieldHeight) continue;
+            if (obstacleArray[neighborIndex] == 3) continue; // Hindernis
+
+            float edgeWeight = 1.0f; // Falls jede Bewegung gleiche Kosten hat
+            float newDist = vecDistances[currentNode] + edgeWeight;
+
+            if (newDist < vecDistances[neighborIndex]) {
+                vecDistances[neighborIndex] = newDist;
+                previous[neighborIndex] = currentNode; // Speichert den Ursprung des Pfades
+                priorityQueue.push({ newDist, neighborIndex });
             }
         }
-
-        //No more nodes available or target found
-        if (currentIndex == -1 || currentIndex == targetPosition[0] + targetPosition[1] * fieldWidth) break;
-        vecVisited[currentIndex] = true;
-
-        //4 possible ways to go, North, South, West, East
-        
-        for (int offset : neighborOffsets) {
-            int neighborIdx = currentIndex + offset;
-            if (neighborIdx >= 0 && neighborIdx < fieldWidth * fieldHeight && !vecVisited[neighborIdx]) {
-                float newDist = vecDistances[currentIndex] + 1;
-                if (newDist < vecDistances[neighborIdx]) {
-                    vecDistances[neighborIdx] = newDist;
-                }
-            }
-        }
     }
-    std::cout << "after calculation \n \n";
 
-    for (int i = 0; i < vecDistances.size(); i++)
+    std::vector<int> path;
+    int current = targetPos;
+
+    while (current != -1) {
+        path.push_back(current);
+        current = previous[current]; // Rückwärts zum Ursprung gehen
+    }
+    std::reverse(path.begin(), path.end()); // Reihenfolge korrigieren
+    for (int pos : path)
     {
-        if (vecDistances.at(i) <= 100) std::cout << std::fixed << std::setprecision(2) << vecDistances.at(i) << " ";
-        else
-        {
-            std::cout << "INF ";
-        }
-        if ((i + 1) % fieldWidth == 0) std::cout << "\n";
-
+        obstacleArray.at(pos) = 4;
     }
+    obstacleArray.at(startPos) = 2;
+    obstacleArray.at(targetPos) = 1;
 }
